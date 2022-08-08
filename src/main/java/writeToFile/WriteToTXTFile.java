@@ -3,10 +3,7 @@ package writeToFile;
 import abstarction.WriteToFile;
 import exception.IncorrectExpressionException;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -151,5 +148,14 @@ public class WriteToTXTFile extends WriteToFile {
             System.out.println("No such file!");
         }
         return expressions;
+    }
+
+    @Override
+    public void clear() {
+        try (PrintWriter pw = new PrintWriter(pathToFile)) {
+            pw.print("");
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
     }
 }

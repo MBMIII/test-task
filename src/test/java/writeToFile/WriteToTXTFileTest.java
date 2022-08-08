@@ -19,13 +19,8 @@ public class WriteToTXTFileTest extends BaseTest {
     WriteToFile write = new WriteToTXTFile(path);
 
     @BeforeTest
-    public void deleteFileIfExist() {
-        try {
-            Path temp = Paths.get(path);
-            Files.deleteIfExists(temp);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void clearFileIfExist() {
+        write.clear();
     }
 
     @Test(priority = 1, dataProvider = "expressions")
