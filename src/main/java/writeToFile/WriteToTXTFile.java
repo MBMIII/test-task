@@ -32,6 +32,7 @@ public class WriteToTXTFile extends WriteToFile {
                 fr.write("Expression");
                 fr.write(" = ");
                 fr.write("Value");
+                fr.write("\n");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -41,11 +42,11 @@ public class WriteToTXTFile extends WriteToFile {
                 reader.readLine();
                 id++;
             }
-            Files.write(path, "\n".getBytes(), StandardOpenOption.APPEND);
             Files.write(path, (id + " -> ").getBytes(), StandardOpenOption.APPEND);
             Files.write(path, expression.getBytes(), StandardOpenOption.APPEND);
             Files.write(path, " = ".getBytes(), StandardOpenOption.APPEND);
             Files.write(path, result.getBytes(), StandardOpenOption.APPEND);
+            Files.write(path, "\n".getBytes(), StandardOpenOption.APPEND);
         } catch (IOException ioException) {
             ioException.printStackTrace();
         }
@@ -111,6 +112,8 @@ public class WriteToTXTFile extends WriteToFile {
             reader.readLine();
             while (reader.ready()) {
                 temp = reader.readLine();
+                if (temp.equals(""))
+                    break;
                 switch (mathSymbol) {
                     case "==":
                         if (Double.parseDouble(temp.replaceAll(removeAllButValue, "")) == value) {

@@ -11,10 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WriteToMYSQLTest extends BaseTest {
-    String schema = "";
-    String url = "" + schema;
-    String username = "";
-    String password = "";
+    String schema = "example";
+    String url = "jdbc:mysql://localhost:3306/" + schema;
+    String username = "root";
+    String password = "pass";
     WriteToDatabase write = new WriteToMYSQL(url, username, password);
 
     @BeforeTest
