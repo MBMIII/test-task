@@ -8,61 +8,62 @@ import writeToFile.WriteToTXTFile;
 public class Main {
     public static void main(String[] args) {
 
-        example(new WriteToTXTFile("src\\main\\resources\\files\\example.txt"));
-        //System.out.println("*****************SQL***********************");
-        //example(new WriteToMYSQL(url, username, pass));
+        try {
+            example(new WriteToTXTFile("src\\main\\resources\\files\\example.txt"));
+            //System.out.println("*****************SQL***********************");
+            //example(new WriteToMYSQL(url, username, pass));
+        } catch (IncorrectExpressionException e) {
+            System.out.println(e.getMessage());
+        }
 
     }
 
-    public static void example(Write write) {
+    public static void example(Write write) throws IncorrectExpressionException {
         //correct expressions
-        try {
-            write.write("2+2+-1*(7+1)");
-            write.write("12*12");
-            write.write("12-12");
-            write.write("12/12");
-        } catch (IncorrectExpressionException e) {
-            System.out.println(e.getMessage());
-        }
+        write.write("2+2+-1*(7+1)");
+        write.write("12*12");
+        write.write("12-12");
+        write.write("12/12");
+        write.write("1.25 + 0.71");
         //checking result
         if (write instanceof WriteToDatabase writeToDatabase) {
             System.out.println("Result");
             writeToDatabase.getAll().forEach(System.out::println);
         }
-        //incorrect expression
         try {
+            //incorrect expression
             write.write("(2+2-1*(7+1)");
         } catch (IncorrectExpressionException e) {
             System.out.println(e.getMessage());
-        }
-        //checking result
-        if (write instanceof WriteToDatabase writeToDatabase) {
+            //checking that expression was not added to list
             System.out.println("Result");
-            writeToDatabase.getAll().forEach(System.out::println);
+            if (write instanceof WriteToDatabase writeToDatabase) {
+                writeToDatabase.getAll().forEach(System.out::println);
+            } else {
+                ((WriteToTXTFile) write).getAll().forEach(System.out::println);
+            }
         }
         //checking update functionality
-        try {
-            write.updateExpressionByID(1, "2+2");
-        } catch (IncorrectExpressionException e) {
-            System.out.println(e.getMessage());
-        }
+        write.updateExpressionByID(1, "2+2-1");
         //checking result
         if (write instanceof WriteToDatabase writeToDatabase) {
             System.out.println("Result");
             writeToDatabase.getAll().forEach(System.out::println);
         }
-        //updating with incorrect expression
         try {
+            //updating with incorrect expression
             write.updateExpressionByID(1, "2+2+1)");
         } catch (IncorrectExpressionException e) {
             System.out.println(e.getMessage());
-        }
-        //checking result
-        if (write instanceof WriteToDatabase writeToDatabase) {
+            //checking that expression was not added to list
             System.out.println("Result");
-            writeToDatabase.getAll().forEach(System.out::println);
+            if (write instanceof WriteToDatabase writeToDatabase) {
+                writeToDatabase.getAll().forEach(System.out::println);
+            } else {
+                ((WriteToTXTFile) write).getAll().forEach(System.out::println);
+            }
         }
         //get expressions by value
-        System.out.println(write.getExpressionByValue(">=", 4.0));
+        System.out.println(write.getExpressionByValue(">=", 3.0));
     }
 }
